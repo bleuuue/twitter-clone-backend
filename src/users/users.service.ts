@@ -8,12 +8,15 @@ import { LoginDto } from './dtos/login.dto';
 import { IsEmail } from 'class-validator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { Profiles } from './entities/profiles.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
+    @InjectRepository(Profiles)
+    private readonly profilesRepository: Repository<Profiles>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -63,5 +66,15 @@ export class UsersService {
 
   async getMe(req: Request): Promise<number> {
     return +req.user;
+  }
+
+  async profileImage(req: Request, files: Array<Express.Multer.File>) {
+    const profile = await this.profilesRepository.create({
+      filename: files[0].filename,
+      originalFilename: files[0].originalname,
+      user: req.user,
+    });
+
+    return await this.profilesRepository.save(profile);
   }
 }

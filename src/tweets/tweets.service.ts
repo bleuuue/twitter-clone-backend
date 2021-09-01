@@ -78,4 +78,10 @@ export class TweetsService {
 
     return deleteTweetResult.affected === 1 ? { ok: true } : { ok: false };
   }
+
+  async deleteOne() {
+    return await this.tweetsRepository.delete({
+      id: 1,
+    });
+  }
 }

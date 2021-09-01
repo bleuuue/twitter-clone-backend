@@ -64,4 +64,9 @@ export class TweetsController {
   ): Promise<DeleteTweetOutputDto> {
     return await this.tweetsService.deleteTweet(req, param);
   }
+
+  @Delete('delete')
+  async deleteOne() {
+    return this.tweetsService.deleteOne();
+  }
 }

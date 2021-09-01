@@ -1,8 +1,19 @@
-import { Body, Controller, Get, Post, UseGuards, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Req,
+  Put,
+  UseInterceptors,
+  UploadedFiles,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UsersService } from './users.service';
 import { Request } from 'express';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -22,5 +33,15 @@ export class UsersController {
   @Get('me')
   async getMe(@Req() req: Request): Promise<number> {
     return this.usersService.getMe(req);
+  }
+
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(AnyFilesInterceptor())
+  async profileImage(
+    @Req() req: Request,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    return await this.usersService.profileImage(req, files);
   }
 }
