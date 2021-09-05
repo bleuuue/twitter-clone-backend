@@ -9,6 +9,8 @@ import { IsEmail } from 'class-validator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Profiles } from './entities/profiles.entity';
+import { promisify } from 'util';
+import { unlink } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -69,6 +71,23 @@ export class UsersService {
   }
 
   async profileImage(req: Request, files: Array<Express.Multer.File>) {
+    const existProfiles = await this.profilesRepository.findOne({
+      where: {
+        user: req.user,
+      },
+    });
+
+    if (existProfiles) {
+      //파일 삭제
+      const fileUnlink = promisify(unlink);
+      await fileUnlink(`./upload/${existProfiles.filename}`);
+
+      //DB 삭제
+      await this.profilesRepository.delete({
+        id: existProfiles.id,
+      });
+    }
+
     const profile = await this.profilesRepository.create({
       filename: files[0].filename,
       originalFilename: files[0].originalname,

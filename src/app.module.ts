@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { LikesModule } from './likes/likes.module';
 import { Likes } from './likes/entities/likes.entity';
 import { Profiles } from './users/entities/profiles.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -33,6 +35,11 @@ import { Profiles } from './users/entities/profiles.entity';
       synchronize: true,
       logging: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+
     UsersModule,
     TweetsModule,
     AuthModule,
