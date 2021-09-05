@@ -8,6 +8,7 @@ import {
   Put,
   UseInterceptors,
   UploadedFiles,
+  Param,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { CreateUserDto } from './dtos/createUser.dto';
@@ -43,5 +44,10 @@ export class UsersController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     return await this.usersService.profileImage(req, files);
+  }
+
+  @Get('profile/image/:userId')
+  async getProfileImage(@Param() param: { userId: string }) {
+    return await this.usersService.getProfileImage(param);
   }
 }

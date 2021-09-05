@@ -77,4 +77,15 @@ export class UsersService {
 
     return await this.profilesRepository.save(profile);
   }
+
+  async getProfileImage(param: { userId: string }) {
+    const user = await this.usersRepository
+      .createQueryBuilder('users')
+      .leftJoin('users.profiles', 'profiles')
+      .where('users.id = :userId', { userId: param.userId })
+      .select(['users.id', 'profiles.id', 'profiles.filename'])
+      .getOne();
+
+    return user;
+  }
 }
