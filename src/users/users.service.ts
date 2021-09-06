@@ -9,6 +9,10 @@ import { IsEmail } from 'class-validator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Profiles } from './entities/profiles.entity';
+import {
+  ModifyIntroduceInputDto,
+  ModifyIntroduceOutputDto,
+} from './dtos/ModifyIntroduce.dto';
 
 @Injectable()
 export class UsersService {
@@ -100,5 +104,20 @@ export class UsersService {
       .getOne();
 
     return user;
+  }
+
+  async modifyIntroduce(
+    req: Request,
+    modifyIntroduceInputDto: ModifyIntroduceInputDto,
+  ): Promise<ModifyIntroduceOutputDto> {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id: req.user,
+      },
+    });
+
+    user.introduce = modifyIntroduceInputDto.introduce;
+
+    return await this.usersRepository.save(user);
   }
 }
