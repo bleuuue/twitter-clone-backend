@@ -9,8 +9,6 @@ import { IsEmail } from 'class-validator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Profiles } from './entities/profiles.entity';
-import { promisify } from 'util';
-import { unlink } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -70,7 +68,7 @@ export class UsersService {
     return +req.user;
   }
 
-  async profileImage(req: Request, files: Array<Express.Multer.File>) {
+  async profileImage(req: Request, files: Array<Express.MulterS3.File>) {
     const existProfiles = await this.profilesRepository.findOne({
       where: {
         user: req.user,
@@ -78,10 +76,6 @@ export class UsersService {
     });
 
     if (existProfiles) {
-      //파일 삭제
-      const fileUnlink = promisify(unlink);
-      await fileUnlink(`./upload/${existProfiles.filename}`);
-
       //DB 삭제
       await this.profilesRepository.delete({
         id: existProfiles.id,
@@ -89,7 +83,7 @@ export class UsersService {
     }
 
     const profile = await this.profilesRepository.create({
-      filename: files[0].filename,
+      filename: files[0].key,
       originalFilename: files[0].originalname,
       user: req.user,
     });
