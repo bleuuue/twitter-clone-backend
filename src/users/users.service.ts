@@ -120,4 +120,19 @@ export class UsersService {
 
     return await this.usersRepository.save(user);
   }
+
+  async getProfile(param: { userId: string }) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id: param.userId,
+      },
+    });
+
+    if (!user)
+      throw new HttpException('Not exist user', HttpStatus.BAD_REQUEST);
+
+    console.log(user);
+
+    return user;
+  }
 }

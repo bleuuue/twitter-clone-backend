@@ -71,4 +71,9 @@ export class UsersController {
       modifyIntroduceInputDto,
     );
   }
+
+  @Get('profile/:userId')
+  async getProfile(@Param() param: { userId: string }) {
+    return await this.usersService.getProfile(param);
+  }
 }
