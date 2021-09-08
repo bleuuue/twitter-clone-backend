@@ -1,3 +1,4 @@
+import { Comments } from 'src/comments/entities/comments.entity';
 import { Common } from 'src/common/common.entity';
 import { Likes } from 'src/likes/entities/likes.entity';
 import { Users } from 'src/users/entities/users.entity';
@@ -17,4 +18,7 @@ export class Tweets extends Common {
 
   @OneToMany(() => Likes, (likes) => likes.tweet)
   likes: Likes[];
+
+  @OneToMany(() => Comments, (comments) => comments.user)
+  comments: Comments[];
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { Comments } from 'src/comments/entities/comments.entity';
 import { Common } from 'src/common/common.entity';
 import { Likes } from 'src/likes/entities/likes.entity';
 import { LikesController } from 'src/likes/likes.controller';
@@ -34,4 +35,7 @@ export class Users extends Common {
 
   @OneToMany(() => Profiles, (profiles) => profiles.user)
   profiles: Profiles[];
+
+  @OneToMany(() => Comments, (comments) => comments.user)
+  comments: Comments[];
 }

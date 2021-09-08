@@ -13,6 +13,8 @@ import { Likes } from './likes/entities/likes.entity';
 import { Profiles } from './users/entities/profiles.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CommentsModule } from './comments/comments.module';
+import { Comments } from './comments/entities/comments.entity';
 
 @Module({
   imports: [
@@ -31,7 +33,7 @@ import { join } from 'path';
             password: process.env.DATABASE_PASSWORD,
             database: process.env.DATABASE_DATABASE,
           }),
-      entities: [Users, Tweets, Likes, Profiles],
+      entities: [Users, Tweets, Likes, Profiles, Comments],
       synchronize: true,
       logging: true,
     }),
@@ -44,6 +46,7 @@ import { join } from 'path';
     TweetsModule,
     AuthModule,
     LikesModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
