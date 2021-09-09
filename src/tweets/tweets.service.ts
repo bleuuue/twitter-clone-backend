@@ -6,6 +6,7 @@ import { CreateTweetDto } from './dtos/createTweet.dto';
 import { Tweets } from './entities/tweets.entity';
 import { Request } from 'express';
 import { Likes } from 'src/likes/entities/likes.entity';
+import { Comments } from 'src/comments/entities/comments.entity';
 
 @Injectable()
 export class TweetsService {
@@ -14,6 +15,8 @@ export class TweetsService {
     private readonly tweetsRepository: Repository<Tweets>,
     @InjectRepository(Likes)
     private readonly likesRepository: Repository<Likes>,
+    @InjectRepository(Comments)
+    private readonly commentsRepository: Repository<Comments>,
   ) {}
 
   async createTweet(req: Request, createTweetDto: CreateTweetDto) {
@@ -64,10 +67,26 @@ export class TweetsService {
       },
     });
 
+    const comments = await this.commentsRepository.find({
+      where: {
+        tweet: {
+          id: tweet.id,
+        },
+      },
+    });
+
     if (likes.length !== 0) {
       await Promise.all(
         likes.map((like) => {
           this.likesRepository.softDelete({ id: like.id });
+        }),
+      );
+    }
+
+    if (comments.length !== 0) {
+      await Promise.all(
+        comments.map((comment) => {
+          this.commentsRepository.softDelete({ id: comment.id });
         }),
       );
     }
