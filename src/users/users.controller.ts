@@ -76,4 +76,12 @@ export class UsersController {
   async getProfile(@Param() param: { userId: string }) {
     return await this.usersService.getProfile(param);
   }
+
+  @ApiOperation({ summary: '팔로우 / 팔로우 취소' })
+  @ApiOkResponse({})
+  @UseGuards(JwtAuthGuard)
+  @Post('follow/:userId')
+  async follow(@Req() req: Request, @Param() param: { userId: string }) {
+    return await this.usersService.follow(req, param);
+  }
 }
