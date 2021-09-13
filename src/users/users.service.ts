@@ -9,12 +9,12 @@ import { IsEmail } from 'class-validator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Profiles } from './entities/profiles.entity';
+import { Follows } from './entities/follows.entity';
+import { AuthService } from 'src/auth/auth.service';
 import {
   ModifyIntroduceInputDto,
   ModifyIntroduceOutputDto,
 } from './dtos/ModifyIntroduce.dto';
-import { Follows } from './entities/follows.entity';
-import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
