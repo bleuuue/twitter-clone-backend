@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Comments } from 'src/comments/entities/comments.entity';
 import { Common } from 'src/common/common.entity';
 import { Likes } from 'src/likes/entities/likes.entity';
@@ -27,6 +27,17 @@ export class Users extends Common {
   @IsNotEmpty()
   @Column('varchar', { default: null })
   introduce: string;
+
+  @Column('boolean', { default: false })
+  verify: boolean;
+
+  @ApiProperty({
+    example: '123456',
+    description: '이메일 인증 코드',
+  })
+  @IsString()
+  @Column('varchar', { default: null })
+  verifyCode: string;
 
   @OneToMany(() => Tweets, (tweets) => tweets.users)
   tweets: Tweets[];
