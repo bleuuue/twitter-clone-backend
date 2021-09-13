@@ -14,7 +14,7 @@ import { AuthService } from 'src/auth/auth.service';
 import {
   ModifyIntroduceInputDto,
   ModifyIntroduceOutputDto,
-} from './dtos/ModifyIntroduce.dto';
+} from './dtos/modifyIntroduce.dto';
 
 @Injectable()
 export class UsersService {
