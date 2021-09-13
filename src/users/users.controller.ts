@@ -19,7 +19,7 @@ import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import {
   ModifyIntroduceInputDto,
   ModifyIntroduceOutputDto,
-} from './dtos/ModifyIntroduce.dto';
+} from './dtos/modifyIntroduce.dto';
 
 @Controller('users')
 export class UsersController {
