@@ -16,6 +16,7 @@ import {
   ModifyIntroduceOutputDto,
 } from './dtos/modifyIntroduce.dto';
 import { FollowOutputDto } from './dtos/follow.dto';
+import { GetFollowsOutputDto } from './dtos/getFollows.dto';
 
 @Injectable()
 export class UsersService {
@@ -190,7 +191,7 @@ export class UsersService {
     return { isFollow: 'follow' };
   }
 
-  async getFollows(req: Request) {
+  async getFollows(req: Request): Promise<GetFollowsOutputDto[]> {
     const follows = await this.followsRepository
       .createQueryBuilder('follows')
       .leftJoin('follows.follower', 'follower')
@@ -200,5 +201,37 @@ export class UsersService {
       .getMany();
 
     return follows;
+  }
+
+  async getFollowers(param: { userId: string }) {
+    return await this.followsRepository
+      .createQueryBuilder('follows')
+      .leftJoin('follows.following', 'following')
+      .leftJoin('follows.follower', 'follower')
+      .where('following.id = :followingId', { followingId: param.userId })
+      .select([
+        'follows.id',
+        'follower.id',
+        'follower.nickname',
+        'follower.introduce',
+      ])
+      .orderBy('follows.createdAt', 'ASC')
+      .getMany();
+  }
+
+  async getFollowings(param: { userId: string }) {
+    return await this.followsRepository
+      .createQueryBuilder('follows')
+      .leftJoin('follows.following', 'following')
+      .leftJoin('follows.follower', 'follower')
+      .where('follower.id = :followerId', { followerId: param.userId })
+      .select([
+        'follows.id',
+        'following.id',
+        'following.nickname',
+        'following.introduce',
+      ])
+      .orderBy('follows.createdAt', 'ASC')
+      .getMany();
   }
 }

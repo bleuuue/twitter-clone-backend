@@ -21,6 +21,7 @@ import {
   ModifyIntroduceOutputDto,
 } from './dtos/modifyIntroduce.dto';
 import { FollowOutputDto } from './dtos/follow.dto';
+import { GetFollowsOutputDto } from './dtos/getFollows.dto';
 
 @Controller('users')
 export class UsersController {
@@ -89,9 +90,23 @@ export class UsersController {
     return await this.usersService.follow(req, param);
   }
 
+  @ApiOperation({ summary: 'Get user all follow' })
+  @ApiOkResponse({
+    type: [GetFollowsOutputDto],
+  })
   @UseGuards(JwtAuthGuard)
   @Get('follow')
-  async getFollow(@Req() req: Request) {
+  async getFollow(@Req() req: Request): Promise<GetFollowsOutputDto[]> {
     return await this.usersService.getFollows(req);
+  }
+
+  @Get('followers/:userId')
+  async getFollowers(@Param() param: { userId: string }) {
+    return await this.usersService.getFollowers(param);
+  }
+
+  @Get('followings/:userId')
+  async getFollowings(@Param() param: { userId: string }) {
+    return await this.usersService.getFollowings(param);
   }
 }
