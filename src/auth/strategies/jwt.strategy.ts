@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     if (!user.verify)
       throw new HttpException(
-        '존재하지 않는 유저입니다.',
+        '이메일 인증이 필요합니다.',
         HttpStatus.UNAUTHORIZED,
       );
 

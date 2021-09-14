@@ -15,6 +15,7 @@ import {
   ModifyIntroduceInputDto,
   ModifyIntroduceOutputDto,
 } from './dtos/modifyIntroduce.dto';
+import { FollowOutputDto } from './dtos/follow.dto';
 
 @Injectable()
 export class UsersService {
@@ -146,7 +147,10 @@ export class UsersService {
     return user;
   }
 
-  async follow(req: Request, param: { userId: string }) {
+  async follow(
+    req: Request,
+    param: { userId: string },
+  ): Promise<FollowOutputDto> {
     const user = await this.usersRepository.findOne({
       where: {
         id: param.userId,
@@ -173,7 +177,7 @@ export class UsersService {
 
     if (existFollow) {
       await this.followsRepository.delete({ id: existFollow.id });
-      return existFollow;
+      return { isFollow: 'unFollow' };
     }
 
     const follow = await this.followsRepository.create({
@@ -181,6 +185,20 @@ export class UsersService {
       following: req.user,
     });
 
-    return await this.followsRepository.save(follow);
+    const newFollow = await this.followsRepository.save(follow);
+
+    return { isFollow: 'follow' };
+  }
+
+  async getFollows(req: Request) {
+    const follows = await this.followsRepository
+      .createQueryBuilder('follows')
+      .leftJoin('follows.follower', 'follower')
+      .leftJoin('follows.following', 'following')
+      .where('following.id = :followingId', { followingId: req.user })
+      .select(['follows.id', 'follower.id', 'following.id'])
+      .getMany();
+
+    return follows;
   }
 }
