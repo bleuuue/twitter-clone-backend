@@ -45,6 +45,24 @@ export class TweetsService {
       .getMany();
   }
 
+  async getProfileTweets(query, param: { userId: string }): Promise<Tweets[]> {
+    return await this.tweetsRepository
+      .createQueryBuilder('tweets')
+      .leftJoin('tweets.users', 'users')
+      .where('users.id = :userId', { userId: param.userId })
+      .select([
+        'tweets.id',
+        'tweets.tweet',
+        'tweets.createdAt',
+        'users.id',
+        'users.nickname',
+      ])
+      .orderBy('tweets.createdAt', 'DESC')
+      .take(10)
+      .skip(query.page ? query.page * 10 : 0)
+      .getMany();
+  }
+
   async deleteTweet(req: Request, param: { tweetsId: string }) {
     const tweet = await this.tweetsRepository.findOne({
       where: {

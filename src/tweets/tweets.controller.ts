@@ -16,11 +16,12 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request } from 'express';
+import { query, Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { DeleteTweetOutputDto } from 'src/likes/dtos/deleteTweet.dto';
 import { UpdateResult } from 'typeorm';
 import { CreateTweetDto } from './dtos/createTweet.dto';
+import { Tweets } from './entities/tweets.entity';
 import { TweetsService } from './tweets.service';
 
 @ApiTags('Tweets')
@@ -40,6 +41,14 @@ export class TweetsController {
   @Get()
   async getTweets(@Query() query: { page: string }) {
     return await this.tweetsService.getTweets(query);
+  }
+
+  @Get(':userId')
+  async getProfileTweets(
+    @Query() query,
+    @Param() param: { userId: string },
+  ): Promise<Tweets[]> {
+    return await this.tweetsService.getProfileTweets(query, param);
   }
 
   @ApiOperation({ summary: '트윗 삭제' })

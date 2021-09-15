@@ -17,6 +17,7 @@ import {
 } from './dtos/modifyIntroduce.dto';
 import { FollowOutputDto } from './dtos/follow.dto';
 import { GetFollowsOutputDto } from './dtos/getFollows.dto';
+import { GetProfileInfoOutputDto } from './dtos/getProfileInfo.dto';
 
 @Injectable()
 export class UsersService {
@@ -208,6 +209,22 @@ export class UsersService {
       .createQueryBuilder('follows')
       .leftJoin('follows.following', 'following')
       .leftJoin('follows.follower', 'follower')
+      .where('follower.id = :followerId', { followerId: param.userId })
+      .select([
+        'follows.id',
+        'following.id',
+        'following.nickname',
+        'following.introduce',
+      ])
+      .orderBy('follows.createdAt', 'ASC')
+      .getMany();
+  }
+
+  async getFollowings(param: { userId: string }) {
+    return await this.followsRepository
+      .createQueryBuilder('follows')
+      .leftJoin('follows.following', 'following')
+      .leftJoin('follows.follower', 'follower')
       .where('following.id = :followingId', { followingId: param.userId })
       .select([
         'follows.id',
@@ -219,19 +236,23 @@ export class UsersService {
       .getMany();
   }
 
-  async getFollowings(param: { userId: string }) {
-    return await this.followsRepository
-      .createQueryBuilder('follows')
-      .leftJoin('follows.following', 'following')
-      .leftJoin('follows.follower', 'follower')
-      .where('follower.id = :followerId', { followerId: param.userId })
+  async getProfileInfo(param: {
+    userId: string;
+  }): Promise<GetProfileInfoOutputDto> {
+    return await this.usersRepository
+      .createQueryBuilder('users')
+      .leftJoin('users.followers', 'followers')
+      .leftJoin('users.followings', 'followings')
+      .leftJoin('users.tweets', 'tweets')
+      .where('users.id = :userId', { userId: param.userId })
       .select([
-        'follows.id',
-        'following.id',
-        'following.nickname',
-        'following.introduce',
+        'users.id',
+        'users.nickname',
+        'users.introduce',
+        'followers.id',
+        'followings.id',
+        'tweets.id',
       ])
-      .orderBy('follows.createdAt', 'ASC')
-      .getMany();
+      .getOne();
   }
 }
