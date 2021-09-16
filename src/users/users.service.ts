@@ -255,4 +255,19 @@ export class UsersService {
       ])
       .getOne();
   }
+
+  async isFollow(req: Request, param: { userId: string }) {
+    const isFollow = await this.followsRepository
+      .createQueryBuilder('follows')
+      .leftJoin('follows.following', 'following')
+      .leftJoin('follows.follower', 'follower')
+      .where('following.id = :followingId', { followingId: req.user })
+      .andWhere('follower.id = :followerId', { followerId: param.userId })
+      .select(['follows.id'])
+      .getOne();
+
+    if (!isFollow) return false;
+
+    return true;
+  }
 }

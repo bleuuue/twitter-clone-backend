@@ -117,4 +117,10 @@ export class UsersController {
   ): Promise<GetProfileInfoOutputDto> {
     return await this.usersService.getProfileInfo(param);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('is-follow/:userId')
+  async isFollow(@Req() req: Request, @Param() param: { userId: string }) {
+    return await this.usersService.isFollow(req, param);
+  }
 }

@@ -14,11 +14,14 @@ import * as multerS3 from 'multer-s3';
 import * as AWS from 'aws-sdk';
 import { Follows } from './entities/follows.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { config } from 'dotenv';
+
+config();
 
 AWS.config.update({
-  accessKeyId: 'AKIA442N3SHG2I6FPKXZ',
-  secretAccessKey: `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`,
-  region: `ap-northeast-1`,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
 });
 
 const s3 = new AWS.S3();
