@@ -5,23 +5,23 @@
 ---
 
 ## **[ About ]**
-**Twitter : 소셜 네트워크 서비스**
+> ### **Twitter : 소셜 네트워크 서비스**
 
-트위터를 클론하며 `React, NestJS`를 학습하기 위한 프로젝트로 Back-end를 구현한 코드입니다.
+트위터를 클론하며 `React, NestJS`를 학습하기 위한 프로젝트로 **Back-end**를 구현한 코드입니다.
 
 ### Development period
-21.09.13 ~ 21.10.27
+21.08.18 ~ 21.09.17
 
 ---
 
 ## **[ Technical Skills ]**
 
-*   Programming Language
-    *   JavaScript, npm
+*   **Programming Language**
+    *   **JavaScript, npm**
 *   Front-end Development
     *   Typescript, React, Axios, Tailwind CSS, Font Awesome
-*   Back-end Development
-    *   NestJS, PostgresSQL
+*   **Back-end Development**
+    *   **NestJS, PostgresSQL**
 *   Tools
     *   VSCode, GitHub, HeidiSQL, Insomnia, Swagger, Slack
 
