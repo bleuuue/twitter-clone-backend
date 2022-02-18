@@ -1,4 +1,4 @@
-# twitter-clone-frontend
+# twitter-clone-Backend
 
 <img src="https://user-images.githubusercontent.com/79898245/154642388-eec9ffc2-7fb2-4433-96aa-2c86fbf2f14c.png">
 
