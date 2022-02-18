@@ -19,7 +19,7 @@
 *   **Programming Language**
     *   **JavaScript, npm**
 *   Front-end Development
-    *   Typescript, React, Axios, Tailwind CSS, Font Awesome
+    *   Typescript, React, Axios, react-router-dom, Tailwind CSS, Font Awesome
 *   **Back-end Development**
     *   **NestJS, PostgresSQL**
 *   Tools
