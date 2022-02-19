@@ -17,7 +17,7 @@
 ## **[ Technical Skills ]**
 
 *   **Programming Language**
-    *   **JavaScript, npm**
+    *   **JavaScript**
 *   Front-end Development
     *   Typescript, React, Axios, react-router-dom, Tailwind CSS, Font Awesome
 *   **Back-end Development**
